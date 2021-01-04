@@ -1,5 +1,7 @@
 # docker user container
 
+Setting up non-root user for docker images. Only the `/home/nonroot` folder is writable.
+
 ```
 $ sudo -s
 $ echo "secret" > ./secrets.txt

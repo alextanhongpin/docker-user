@@ -1,11 +1,12 @@
+# Bad practice, specify the exact version of the container instead of using latest.
 FROM ubuntu:latest
 
-# Add user 1000 with group 1000.
-RUN groupadd -g 1000 user && \
-    useradd -r -u 1000 -g user user 
+# NOTE: UIDs below 10,000 are a security risk, as a container breakout could
+# result in the container being # ran as a more privilged user on the host
+# kernel with th same UID.
+# Add user 10001 with group 10001.
+RUN groupadd -g 10001 nonroot && \
+    useradd -r -u 10001 -g nonroot -d /home/nonroot nonroot
 
-# Change ownership of the directory to user.
-RUN chown -R user:user /tmp
-
-# Override the root user to user.
-USER user
+# Run the application with the non-root user.
+USER nonroot
